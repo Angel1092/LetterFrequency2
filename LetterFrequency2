@@ -12,14 +12,14 @@ public class LetterFrequency2 {
         // Create a Scanner object to read user input from console
         Scanner input = new Scanner(System.in);
 
-        // Create a File object representing the file where data will be saved
+        // This will create a File object representing the file where data will be saved
         File file = new File("UserData.txt");
 
         try {
-            // Create a FileWriter to write data into the file
+            // This creates a FileWriter to write data into the file
             FileWriter writer = new FileWriter(file);
 
-            // Loop to get input for 5 users
+            // Will loop to get input for 5 users
             for (int i = 1; i <= 5; i++) {
                 System.out.println("Enter name for User " + i + ": ");
                 String name = input.nextLine();
@@ -33,7 +33,7 @@ public class LetterFrequency2 {
                 System.out.println("Enter ZIP code for User " + i + ": ");
                 String zip = input.nextLine();
 
-                // Loop to ensure a valid numeric age is entered
+                // This loops to ensure a valid numeric age is entered
                 int age = 0;
                 while (true) {
                     System.out.println("Enter age for User " + i + " (numeric): ");
@@ -50,7 +50,7 @@ public class LetterFrequency2 {
                 writer.write(name + "|" + address + "|" + city + "|" + zip + "|" + age + "\n");
             }
 
-            // Close the FileWriter to save the file
+            // This will close the FileWriter to save the file
             writer.close();
             System.out.println("\nData successfully written to file.\n");
 
@@ -115,3 +115,4 @@ public class LetterFrequency2 {
         input.close();
     }
 }
+  
