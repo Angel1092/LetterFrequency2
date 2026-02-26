@@ -1,0 +1,117 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.Map;
+import java.util.HashMap;
+
+public class LetterFrequency2 {
+
+    public static void main(String[] args) {
+
+        // Create a Scanner object to read user input from console
+        Scanner input = new Scanner(System.in);
+
+        // Create a File object representing the file where data will be saved
+        File file = new File("UserData.txt");
+
+        try {
+            // Create a FileWriter to write data into the file
+            FileWriter writer = new FileWriter(file);
+
+            // Loop to get input for 5 users
+            for (int i = 1; i <= 5; i++) {
+                System.out.println("Enter name for User " + i + ": ");
+                String name = input.nextLine();
+
+                System.out.println("Enter address for User " + i + ": ");
+                String address = input.nextLine();
+
+                System.out.println("Enter city for User " + i + ": ");
+                String city = input.nextLine();
+
+                System.out.println("Enter ZIP code for User " + i + ": ");
+                String zip = input.nextLine();
+
+                // Loop to ensure a valid numeric age is entered
+                int age = 0;
+                while (true) {
+                    System.out.println("Enter age for User " + i + " (numeric): ");
+                    String ageInput = input.nextLine();
+                    try {
+                        age = Integer.parseInt(ageInput); // convert input to integer
+                        break; // exit loop if valid
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid input. Please enter a number for age.");
+                    }
+                }
+
+                // Write user data to file separated by "|"
+                writer.write(name + "|" + address + "|" + city + "|" + zip + "|" + age + "\n");
+            }
+
+            // Close the FileWriter to save the file
+            writer.close();
+            System.out.println("\nData successfully written to file.\n");
+
+        } catch (IOException e) {
+            System.out.println("Error writing to file.");
+        }
+
+        // Read the file and process data
+        try {
+            Scanner fileReader = new Scanner(file);
+            System.out.println("----- Reading Data From File -----");
+
+            int userNumber = 1;          // Counter for users
+            int sumAges = 0;             // To calculate total age
+            Map<String, Integer> zipFrequency = new HashMap<>(); // Map to store ZIP frequencies
+
+            // Read each line from the file
+            while (fileReader.hasNextLine()) {
+                String line = fileReader.nextLine();
+                String[] parts = line.split("\\|"); // Split line by "|"
+
+                // Print user information
+                System.out.println("\nUser " + userNumber + " Information:");
+                System.out.println("Name: " + parts[0]);
+                System.out.println("Address: " + parts[1]);
+                System.out.println("City: " + parts[2]);
+                System.out.println("ZIP: " + parts[3]);
+                System.out.println("Age: " + parts[4]);
+
+                // Add age to total for average calculation
+                sumAges += Integer.parseInt(parts[4].trim());
+
+                // Count frequency of each ZIP code
+                String zip = parts[3].trim();
+                zipFrequency.put(zip, zipFrequency.getOrDefault(zip, 0) + 1);
+
+                userNumber++;
+            }
+
+            fileReader.close();
+
+            // Calculate and display average age
+            double averageAge = (double) sumAges / (userNumber - 1);
+            System.out.println("\nAverage Age: " + averageAge);
+
+            // Find the most common ZIP code
+            String modeZip = null;
+            int maxCount = 0;
+            for (Map.Entry<String,Integer> entry : zipFrequency.entrySet()) {
+                if (entry.getValue() > maxCount) {
+                    maxCount = entry.getValue();
+                    modeZip = entry.getKey();
+                }
+            }
+            System.out.println("Most Common ZIP Code: " + modeZip);
+
+        } catch (IOException e) {
+            System.out.println("Error reading file.");
+        }
+
+        // Close the Scanner for user input
+        input.close();
+    }
+}
